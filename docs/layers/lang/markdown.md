@@ -11,6 +11,7 @@ description: "Edit markdown within vim, autopreview markdown in the default brow
 - [Install](#install)
 - [formatting](#formatting)
   - [options](#options)
+- [Content lint](#content-lint)
 - [Key bindings](#key-bindings)
 
 <!-- vim-markdown-toc -->
@@ -56,6 +57,15 @@ Enable/Disable wcwidth for detecting the length of a table cell, default is 0. T
 
 Bullet marker to use for list items (`'-'`, `'*'`, or `'+'`, default: `'-'`).
 
+## Content lint
+
+SpaceVim use remark to check markdown file, so you need to install this program. you can install it via npm:
+
+```sh
+npm -g install remark
+npm -g install remark-cli
+npm -g install remark-preset-lint-recommended
+```
 
 ## Key bindings
 

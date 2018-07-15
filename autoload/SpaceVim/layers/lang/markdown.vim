@@ -139,7 +139,10 @@ endfunction
 function! s:generate_neomake_remarkrc() abort
   let conf = [
         \ 'module.exports = {',
+        \ '  settings: {',
         \ ]
+  call add(conf, '    "remark-lint-list-item-indent": false,')
+  call add(conf, '  },')
   call add(conf, '  plugins: [')
   call add(conf, "    require('remark-preset-lint-recommended'),")
   call add(conf, '  ]')
