@@ -101,6 +101,7 @@ function! s:remark_lint_callback(context) abort
   for l:match in s:GetMatches(a:context.output, l:pattern)
     let l:item = {
           \   'lnum': l:match[1] + 0,
+          \   'bufnr': a:context.jobinfo.bufnr,
           \   'col': l:match[2] + 0,
           \   'type': l:match[6] is# 'error' ? 'E' : 'W',
           \   'text': l:match[7],
