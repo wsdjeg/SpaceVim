@@ -47,9 +47,10 @@ function! SpaceVim#layers#lang#markdown#config() abort
         \ 'stdin': 1,
         \ }
   let g:neomake_markdown_enabled_makers = ['remark']
+  let neomake_remarkrc = s:generate_neomake_remarkrc()
   let g:neomake_markdown_remark_maker = {
         \ 'exe': 'remark',
-        \ 'args': ['--no-stdout', '--no-color'],
+        \ 'args': ['--no-stdout', '--no-color'] + (empty(neomake_remarkrc) ?  [] : ['-r', neomake_remarkrc]),
         \ 'process_output': function('s:remark_lint_callback'),
         \ }
 
@@ -132,4 +133,17 @@ function! s:GetMatches(lines, patterns) abort
   endfor
 
   return l:matches
+endfunction
+
+function! s:generate_neomake_remarkrc() abort
+  let conf = [
+        \ 'module.exports = {',
+        \ ]
+  call add(conf, '  plugins: [')
+  call add(conf, "    require('remark-preset-lint-recommended'),")
+  call add(conf, '  ]')
+  call add(conf, '};')
+  let f  = tempname() . '.js'
+  call writefile(conf, f)
+  return f
 endfunction
