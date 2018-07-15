@@ -35,8 +35,8 @@ function! SpaceVim#layers#lang#markdown#config() abort
   let g:markdown_enable_insert_mode_leader_mappings = 0
   let g:markdown_enable_spell_checking = 0
   let g:markdown_quote_syntax_filetypes = {
-        \ "vim" : {
-        \   "start" : "\\%(vim\\|viml\\)",
+        \ 'vim' : {
+        \   'start' : "\\%(vim\\|viml\\)",
         \},
         \}
   let remarkrc = s:generate_remarkrc()
@@ -45,6 +45,12 @@ function! SpaceVim#layers#lang#markdown#config() abort
         \ 'exe': 'remark',
         \ 'args': ['--no-color', '--silent'] + (empty(remarkrc) ?  [] : ['-r', remarkrc]),
         \ 'stdin': 1,
+        \ }
+  let g:neomake_markdown_enabled_makers = ['remark']
+  let g:neomake_markdown_remark_maker = {
+        \ 'exe': 'remark',
+        \ 'args': ['--no-stdout', '--no-color'],
+        \ 'process_output': function('s:remark_lint_callback'),
         \ }
 
   " iamcco/markdown-preview.vim {{{
@@ -62,8 +68,8 @@ function! s:mappings() abort
     let g:_spacevim_mappings_space = {}
   endif
   let g:_spacevim_mappings_space.l = {'name' : '+Language Specified'}
-  call SpaceVim#mapping#space#langSPC('nmap', ['l','ft'], "Tabularize /|", 'Format table under cursor', 1)
-  call SpaceVim#mapping#space#langSPC('nmap', ['l','p'], "MarkdownPreview", 'Real-time markdown preview', 1)
+  call SpaceVim#mapping#space#langSPC('nmap', ['l','ft'], 'Tabularize /|', 'Format table under cursor', 1)
+  call SpaceVim#mapping#space#langSPC('nmap', ['l','p'], 'MarkdownPreview', 'Real-time markdown preview', 1)
 endfunction
 
 function! s:generate_remarkrc() abort
@@ -87,4 +93,43 @@ function! s:generate_remarkrc() abort
   return f
 endfunction
 
+function! s:remark_lint_callback(context) abort
+  let pattern = '^ \+\(\d\+\):\(\d\+\)\(-\(\d\+\):\(\d\+\)\)\?  \(warning\|error\)  \(.\+\)$'
+  let l:output = []
 
+  for l:match in s:GetMatches(a:context.output, l:pattern)
+    let l:item = {
+          \   'lnum': l:match[1] + 0,
+          \   'col': l:match[2] + 0,
+          \   'type': l:match[6] is# 'error' ? 'E' : 'W',
+          \   'text': l:match[7],
+          \}
+    if l:match[3] isnot# ''
+      let l:item.end_lnum = l:match[4] + 0
+      let l:item.end_col = l:match[5] + 0
+    endif
+    call add(l:output, l:item)
+  endfor
+
+  return l:output
+  return []
+endfunction
+
+function! s:GetMatches(lines, patterns) abort
+  let l:matches = []
+  let l:lines = type(a:lines) == type([]) ? a:lines : [a:lines]
+  let l:patterns = type(a:patterns) == type([]) ? a:patterns : [a:patterns]
+
+  for l:line in l:lines
+    for l:pattern in l:patterns
+      let l:match = matchlist(l:line, l:pattern)
+
+      if !empty(l:match)
+        call add(l:matches, l:match)
+        break
+      endif
+    endfor
+  endfor
+
+  return l:matches
+endfunction
