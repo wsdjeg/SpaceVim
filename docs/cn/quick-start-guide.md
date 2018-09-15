@@ -109,3 +109,4 @@ merged = 0
 - [SpaceVim 用户文档](../documentation/). SpaceVim 官方文档，包含了 SpaceVim 配置及使用的每一个细节，是熟悉和掌握 SpaceVim 使用技巧的必备资料。
 - [Hack-SpaceVim](https://github.com/Gabirel/Hack-SpaceVim). Tell you how to hack SpaceVim.
 - [SpaceVim 入门教程](https://everettjf.gitbooks.io/spacevimtutorial/content/)：everettjf 所著的 SpaceVim 入门教程
+- [SpaceVim 视频教程](../video-tutoral/): SpaceVim 使用及配置相关视频教程
