@@ -94,6 +94,8 @@ merged = 0
 
 ## Learning SpaceVim
 
-- [SpaceVim Documentation](../documentation). Also known as "The Book", The SpaceVim Documentation will introduce
+- [SpaceVim video tutorial](../video-tutoral/): official video tutorial for SpaceVim
+- [SpaceVim Documentation](../documentation/). Also known as "The Book", The SpaceVim Documentation will introduce
   you to the main topics important to using SpaceVim. The book is the primary official document of the language.
 - [Hack-SpaceVim](https://github.com/Gabirel/Hack-SpaceVim). Tell you how to hack SpaceVim.
+
