@@ -47,6 +47,8 @@ augroup vfinit
         \ (!has('vim_starting') && winnr('$') == 1  && g:_spacevim_autoclose_filetree
         \ && &filetype ==# 'defx') |
         \ call s:close_last_vimfiler_windows() | endif
+  autocmd BufEnter,VimEnter,BufNew,BufWinEnter,BufRead,BufCreate
+        \ * call s:browse_check(expand('<amatch>'))
 augroup END
 
 " in this function, we should check if shell terminal still exists,
@@ -210,4 +212,25 @@ endfunction
 
 function! s:trim_right(str, trim)
   return substitute(a:str, printf('%s$', a:trim), '', 'g')
+endfunction
+function! s:browse_check(path) abort
+  if a:path == ''
+        \ || bufnr('%') != expand('<abuf>')
+    return
+  endif
+
+  " Disable netrw.
+  augroup FileExplorer
+    autocmd!
+  augroup END
+
+  let path = a:path
+  " For ":edit ~".
+  if fnamemodify(path, ':t') ==# '~'
+    let path = '~'
+  endif
+
+  if isdirectory(path)
+    exe 'Defx -no-toggle ' . path
+  endif
 endfunction
