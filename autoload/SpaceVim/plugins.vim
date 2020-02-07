@@ -200,7 +200,13 @@ function! SpaceVim#plugins#begin(path) abort
     call dein#begin(a:path)
   elseif g:spacevim_plugin_manager ==# 'vim-plug'
     call plug#begin(a:path)
+  else
+    call s:plugin_begin()
   endif
+endfunction
+
+function! s:plugin_begin() abort
+  
 endfunction
 
 function! SpaceVim#plugins#end() abort
@@ -229,7 +235,13 @@ function! SpaceVim#plugins#end() abort
     call dein#call_hook('source')
   elseif g:spacevim_plugin_manager ==# 'vim-plug'
     call plug#end()
+  else
+    call s:plugin_end()
   endif
+endfunction
+
+function! s:plugin_end() abort
+  
 endfunction
 
 function! SpaceVim#plugins#defind_hooks(bundle) abort
