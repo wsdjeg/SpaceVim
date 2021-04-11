@@ -206,6 +206,10 @@ function! SpaceVim#mapping#close_current_buffer(...) abort
         exe cmd_close_buf . bn
       endif
     endif
+  else
+    " get the previous buffer number.
+    " run 'b' . bn
+    " run cmd_close_buf . bn
   endif
 endfunction
 
